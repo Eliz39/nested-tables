@@ -1,8 +1,11 @@
+import {Table} from "./components/Table.tsx"
+import data from './data/data.json'
+
 function App() {
   return (
-    <div>
-      Welcome
-    </div>
+      <div className="p-4">
+          <Table data={data} />
+      </div>
   )
 }
 
