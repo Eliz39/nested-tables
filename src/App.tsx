@@ -1,19 +1,12 @@
-import {useState} from "react"
 import {Table} from "./components/Table.tsx"
-import data from './data/data.json'
-import {HierarchyItem} from "./types/HierarchyType.ts"
-import {removeRecursive} from "./utils/removeRecursive.ts"
+import {useStore} from "./store/useStore.ts"
 
 function App() {
-    const [currentData, setCurrentData] = useState<HierarchyItem[]>(data)
-
-    const onRemove = (idToRemove: string) => {
-        setCurrentData(removeRecursive(currentData, idToRemove))
-    }
+    const { data, removeItem } = useStore()
 
     return (
         <div className="p-4">
-            <Table data={currentData} onRemove={onRemove}/>
+            <Table data={data} onRemove={removeItem}/>
         </div>
     )
 }
