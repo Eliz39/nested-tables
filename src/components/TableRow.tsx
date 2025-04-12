@@ -6,11 +6,13 @@ type TableRowProps = {
     item: HierarchyItem
     columns: string[]
     index: number
+    onRemove: (id: string) => void
 }
 
-export const TableRow = ({item, columns, index}: TableRowProps) => {
+export const TableRow = ({item, columns, index, onRemove}: TableRowProps) => {
     const [expanded, setExpanded] = useState(false)
-    const hasChildren = item.children && Object.keys(item.children).length > 0;
+    const hasChildren = item.children && Object.keys(item.children).length > 0
+
     return (
         <>
             <tr className={`${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'} hover:bg-gray-100 transition`}>
@@ -19,7 +21,7 @@ export const TableRow = ({item, columns, index}: TableRowProps) => {
                         <button
                             type="button"
                             onClick={() => setExpanded(!expanded)}
-                            className="flex items-center gap-1 font-mono"
+                            className="flex items-center gap-1 font-mono cursor-pointer"
                         >
                             {expanded ? '▼' : '▶'}
                         </button>
@@ -32,6 +34,15 @@ export const TableRow = ({item, columns, index}: TableRowProps) => {
                         {typeof item.data[key] === 'string' || typeof item.data[key] === 'number' ? item.data[key] : ''}
                     </td>
                 ))}
+                <td className="px-4 py-4 align-center">
+                    <button
+                        type="button"
+                        onClick={() => onRemove(item.data.ID as string)}
+                        className="cursor-pointer"
+                    >
+                        ❌
+                    </button>
+                </td>
             </tr>
             {expanded && hasChildren &&
                 <tr>
@@ -40,7 +51,7 @@ export const TableRow = ({item, columns, index}: TableRowProps) => {
                             if (!child?.records) return null
 
                             return <div key={key} className="p-4 inline-block">
-                                <Table data={child.records}/>
+                                <Table data={child.records} onRemove={onRemove}/>
                             </div>
                         })}
                     </td>

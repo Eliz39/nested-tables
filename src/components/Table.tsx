@@ -3,9 +3,10 @@ import {HierarchyItem} from "../types/HierarchyType.ts"
 
 type TableProps = {
     data: HierarchyItem[]
+    onRemove: (id: string) => void
 }
 
-export const Table = ({data}: TableProps) => {
+export const Table = ({data, onRemove}: TableProps) => {
     if (data.length === 0) return null
 
     const allKeys: string[] = Array.from(
@@ -23,6 +24,7 @@ export const Table = ({data}: TableProps) => {
                         {allKeys.map(col => (
                             <th key={col} className="px-4 py-6 text-sm sm:text-xs md:text-sm">{col}</th>
                         ))}
+                        <th></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -32,6 +34,7 @@ export const Table = ({data}: TableProps) => {
                             item={item}
                             columns={allKeys}
                             index={index}
+                            onRemove={onRemove}
                         />
                     ))}
                     </tbody>
